@@ -1,11 +1,49 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import { Overlay, ModalImage } from './Modal.styled';
 
 const rootModal = document.querySelector('#root-modal');
 
-class Modal extends Component {
+function Modal({ onClose, children }) {
+  const handleClick = event => {
+    if (event.currentTarget === event.target) {
+      onClose();
+    }
+  };
+
+  const handleKeyDown = event => {
+    if (event.code === 'Escape') {
+      onClose();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  });
+
+  return createPortal(
+    <Overlay onClick={handleClick}>
+      <ModalImage>{children}</ModalImage>
+    </Overlay>,
+    rootModal,
+  );
+}
+
+export default Modal;
+
+Modal.propTypes = {
+  children: PropTypes.node.isRequired,
+  onClick: PropTypes.func,
+  onClose: PropTypes.func,
+};
+
+//-------class---------
+
+/* class Modal extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
     onClick: PropTypes.func,
@@ -43,3 +81,4 @@ class Modal extends Component {
 }
 
 export default Modal;
+ */
