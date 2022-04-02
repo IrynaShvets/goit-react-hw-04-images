@@ -4,7 +4,7 @@ import { GalleryItem, GalleryItemImage } from './ImageGalleryItem.styled';
 const ImageGalleryItem = ({ largeImageURL, webformatURL, tags, onClick }) => (
   <GalleryItem
     onClick={() => {
-      onClick(largeImageURL);
+      onClick(largeImageURL, tags);
     }}
   >
     <GalleryItemImage src={webformatURL} alt={tags} />
